@@ -1,0 +1,182 @@
+{
+  "bicicletas": [
+    {
+      "id": 1,
+      "model": "Urban Pro",
+      "type": "Urbana",
+      "location": {
+        "lat": -23.5613,
+        "lng": -46.6565,
+        "address": "Av. Paulista, 1000 - Bela Vista, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 95,
+      "image": "/static/img/bike-urban.jpg",
+      "price": {
+        "hourly": 8.50,
+        "daily": 35.00,
+        "weekly": 180.00
+      },
+      "features": ["GPS", "Antifurto", "Luzes LED", "Cesta frontal"],
+      "description": "Bicicleta urbana ideal para deslocamentos pela cidade, com design moderno e confortável."
+    },
+    {
+      "id": 2,
+      "model": "E-Bike Max",
+      "type": "Elétrica",
+      "location": {
+        "lat": -23.5505,
+        "lng": -46.6333,
+        "address": "R. Augusta, 2000 - Consolação, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 87,
+      "image": "/static/img/bike-electric.jpg",
+      "price": {
+        "hourly": 15.00,
+        "daily": 65.00,
+        "weekly": 350.00
+      },
+      "features": ["Motor elétrico", "Bateria removível", "Display digital", "Freios a disco"],
+      "description": "Bicicleta elétrica com autonomia de até 50km, perfeita para trajetos longos sem esforço."
+    },
+    {
+      "id": 3,
+      "model": "Mountain Explorer",
+      "type": "Mountain Bike",
+      "location": {
+        "lat": -23.5489,
+        "lng": -46.6388,
+        "address": "R. Haddock Lobo, 500 - Cerqueira César, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 0,
+      "image": "/static/img/bike-mountain.jpg",
+      "price": {
+        "hourly": 12.00,
+        "daily": 48.00,
+        "weekly": 280.00
+      },
+      "features": ["Suspensão dianteira", "21 marchas", "Pneus off-road", "Quadro reforçado"],
+      "description": "Mountain bike robusta para aventuras urbanas e trilhas, com sistema de marchas avançado."
+    },
+    {
+      "id": 4,
+      "model": "Speed Racer",
+      "type": "Speed",
+      "location": {
+        "lat": -23.5482,
+        "lng": -46.6369,
+        "address": "Av. Consolação, 1500 - Consolação, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 0,
+      "image": "/static/img/bike-speed.jpg",
+      "price": {
+        "hourly": 10.00,
+        "daily": 40.00,
+        "weekly": 220.00
+      },
+      "features": ["Drop bar", "Pneus finos", "Quadro aerodinâmico", "16 marchas"],
+      "description": "Bicicleta speed para quem busca velocidade e performance nos deslocamentos urbanos."
+    },
+    {
+      "id": 5,
+      "model": "Comfort City",
+      "type": "Urbana",
+      "location": {
+        "lat": -23.5547,
+        "lng": -46.6722,
+        "address": "R. Fradique Coutinho, 1200 - Vila Madalena, São Paulo - SP"
+      },
+      "available": false,
+      "battery": 73,
+      "image": "/static/img/bike-comfort.jpg",
+      "price": {
+        "hourly": 7.00,
+        "daily": 28.00,
+        "weekly": 150.00
+      },
+      "features": ["Selim confortável", "Guidão ergonômico", "3 marchas", "Bagageiro"],
+      "description": "Bicicleta confortável para passeios relaxantes, ideal para uso recreativo e lazer."
+    },
+    {
+      "id": 6,
+      "model": "E-Urban Plus",
+      "type": "Elétrica",
+      "location": {
+        "lat": -23.5629,
+        "lng": -46.6544,
+        "address": "R. Dr. Rafael de Barros, 100 - Paraíso, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 92,
+      "image": "/static/img/bike-e-urban.jpg",
+      "price": {
+        "hourly": 18.00,
+        "daily": 75.00,
+        "weekly": 400.00
+      },
+      "features": ["Motor 250W", "Autonomia 60km", "Carregamento rápido", "App integrado"],
+      "description": "Bicicleta elétrica premium com conectividade e recursos avançados de navegação."
+    },
+    {
+      "id": 7,
+      "model": "Classic Vintage",
+      "type": "Urbana",
+      "location": {
+        "lat": -23.5590,
+        "lng": -46.6614,
+        "address": "Al. Lorena, 800 - Jardim Paulista, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 0,
+      "image": "/static/img/bike-vintage.jpg",
+      "price": {
+        "hourly": 9.00,
+        "daily": 36.00,
+        "weekly": 200.00
+      },
+      "features": ["Design retrô", "Cesta de vime", "Campainha clássica", "Cores vibrantes"],
+      "description": "Bicicleta com design vintage e charme clássico, perfeita para um visual único na cidade."
+    },
+    {
+      "id": 8,
+      "model": "Trail Beast",
+      "type": "Mountain Bike",
+      "location": {
+        "lat": -23.5525,
+        "lng": -46.6434,
+        "address": "R. Bela Cintra, 2000 - Consolação, São Paulo - SP"
+      },
+      "available": true,
+      "battery": 0,
+      "image": "/static/img/bike-trail.jpg",
+      "price": {
+        "hourly": 14.00,
+        "daily": 55.00,
+        "weekly": 320.00
+      },
+      "features": ["Suspensão full", "27 marchas", "Freios hidráulicos", "Pneus tubeless"],
+      "description": "Mountain bike profissional para aventureiros que buscam máxima performance em qualquer terreno."
+    }
+  ],
+  "metadata": {
+    "total_bikes": 8,
+    "available_bikes": 6,
+    "last_updated": "2025-09-18T18:24:00Z",
+    "locations": [
+      "Av. Paulista",
+      "R. Augusta", 
+      "Consolação",
+      "Vila Madalena",
+      "Jardim Paulista"
+    ],
+    "bike_types": [
+      "Urbana",
+      "Elétrica", 
+      "Mountain Bike",
+      "Speed"
+    ]
+  }
+}
