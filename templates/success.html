@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Sucesso - BikeRent{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="success-container text-center">
+            <!-- Success Icon -->
+            <div class="success-icon mb-4">
+                <i class="fas fa-check-circle text-success"></i>
+            </div>
+            
+            <h2 class="fw-bold text-success mb-3">Pagamento Realizado!</h2>
+            <p class="lead mb-4">
+                Sua bicicleta foi reservada com sucesso. Use o QR Code abaixo para destravá-la.
+            </p>
+            
+            <!-- Bike Info -->
+            <div class="bike-success-card mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <i class="fas fa-bicycle bike-success-icon"></i>
+                    </div>
+                    <div class="col-md-8 text-start">
+                        <h4>{{ bike.model }}</h4>
+                        <p class="mb-1"><strong>Tipo:</strong> {{ bike.type.title() }}</p>
+                        <p class="mb-1"><strong>Plano:</strong> {{ plan.name }}</p>
+                        <p class="mb-0"><strong>Valor pago:</strong> R$ {{ "%.2f"|format(reservation.price) }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- QR Code -->
+            <div class="qr-code-section">
+                <h4 class="mb-3">
+                    <i class="fas fa-qrcode me-2"></i>QR Code para Desbloqueio
+                </h4>
+                
+                <div class="qr-code-container">
+                    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="qr-code-image">
+                </div>
+                
+                <div class="qr-instructions">
+                    <p class="mb-2">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        <strong>Como usar:</strong>
+                    </p>
+                    <ol class="text-start d-inline-block">
+                        <li>Aproxime-se da bicicleta reservada</li>
+                        <li>Posicione o QR Code próximo ao leitor da bike</li>
+                        <li>Aguarde o desbloqueio automático</li>
+                        <li>Boa pedalada!</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="success-actions">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary w-100">
+                            <i class="fas fa-tachometer-alt me-2"></i>Ver Minhas Reservas
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ url_for('map_view') }}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-map-marked-alt me-2"></i>Alugar Outra Bike
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Important Info -->
+            <div class="alert alert-warning mt-4 text-start">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Importante:</strong> Mantenha este QR Code salvo até devolver a bicicleta. 
+                Você precisará dele para finalizar o aluguel.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

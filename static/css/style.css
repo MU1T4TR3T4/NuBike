@@ -1,0 +1,599 @@
+/* Nubank-inspired BikeRent Stylesheet */
+:root {
+    --primary-purple: #820AD1;
+    --secondary-purple: #BA68C8;
+    --light-purple: #E1BEE7;
+    --dark-purple: #4A148C;
+    --white: #FFFFFF;
+    --light-gray: #F5F5F5;
+    --medium-gray: #9E9E9E;
+    --dark-gray: #424242;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --danger: #F44336;
+    --info: #2196F3;
+    
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+    --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+}
+
+/* Bootstrap Overrides */
+.btn-primary {
+    background-color: var(--primary-purple);
+    border-color: var(--primary-purple);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+    border: none;
+    color: var(--white);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, var(--dark-purple), var(--primary-purple));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: var(--white);
+}
+
+.bg-primary {
+    background-color: var(--primary-purple) !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+}
+
+.text-primary {
+    color: var(--primary-purple) !important;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: var(--border-radius-sm);
+    margin: 0 4px;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 0;
+    margin: 0;
+}
+
+.hero-bg {
+    background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,200 300,100 600,300 1000,150 1000,0 0,0"/></svg>');
+    background-size: cover;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 0;
+}
+
+.hero-icon {
+    font-size: 12rem;
+    color: rgba(255, 255, 255, 0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2.5rem;
+    margin-top: 2rem;
+}
+
+.auth-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: var(--border-radius-sm);
+    border: 2px solid #E0E0E0;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 0.2rem rgba(130, 10, 209, 0.25);
+}
+
+.input-group-text {
+    background-color: var(--light-gray);
+    border: 2px solid #E0E0E0;
+    border-radius: var(--border-radius-sm);
+    color: var(--medium-gray);
+}
+
+/* Feature Cards */
+.feature-card {
+    padding: 2rem 1rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--white);
+    font-size: 2rem;
+}
+
+/* Map Styles */
+.map-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.filter-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+.bike-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 16px;
+    border: 3px solid var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.bike-marker.available {
+    background-color: var(--success);
+}
+
+.bike-marker.unavailable {
+    background-color: var(--medium-gray);
+}
+
+/* Bike Cards */
+.bike-item {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.bike-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Bike Details */
+.bike-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+}
+
+.bike-detail-icon {
+    font-size: 8rem;
+    color: var(--primary-purple);
+}
+
+.bike-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--light-gray);
+    border-radius: var(--border-radius-sm);
+}
+
+/* Rental Plans */
+.rental-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.plan-option {
+    margin-bottom: 0;
+}
+
+.plan-label {
+    display: block;
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--light-gray);
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan-label:hover {
+    border-color: var(--secondary-purple);
+    background: rgba(186, 104, 200, 0.1);
+}
+
+.form-check-input:checked ~ .plan-label {
+    border-color: var(--primary-purple);
+    background: rgba(130, 10, 209, 0.1);
+}
+
+.plan-name {
+    color: var(--primary-purple);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.plan-description {
+    color: var(--medium-gray);
+    margin-bottom: 0.75rem;
+}
+
+.plan-price .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-purple);
+}
+
+.plan-price .unit {
+    color: var(--medium-gray);
+    font-size: 0.9rem;
+}
+
+/* Payment Styles */
+.payment-container, .success-container {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2.5rem;
+    margin-top: 1rem;
+}
+
+.order-summary {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.bike-info-card {
+    background: var(--white);
+    border-radius: var(--border-radius-sm);
+    padding: 1rem;
+}
+
+.bike-payment-icon {
+    font-size: 4rem;
+    color: var(--primary-purple);
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: var(--light-gray);
+    border: 2px solid var(--primary-purple);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 0.5rem;
+}
+
+/* Success Page */
+.success-icon i {
+    font-size: 5rem;
+}
+
+.bike-success-card {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.bike-success-icon {
+    font-size: 4rem;
+    color: var(--primary-purple);
+}
+
+.qr-code-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    display: inline-block;
+    margin: 1rem 0;
+}
+
+.qr-code-image {
+    max-width: 200px;
+    height: auto;
+}
+
+.qr-instructions {
+    background: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-sm);
+    margin-top: 1rem;
+}
+
+/* Dashboard */
+.stat-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+.stat-info h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-purple);
+    margin-bottom: 0;
+}
+
+.stat-info p {
+    color: var(--medium-gray);
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.dashboard-section {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+    color: var(--primary-purple);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--light-purple);
+}
+
+.reservation-card {
+    background: var(--light-gray);
+    border-radius: var(--border-radius-sm);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.reservation-card:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.reservation-icon {
+    font-size: 2rem;
+    color: var(--primary-purple);
+}
+
+.reservation-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.empty-state {
+    color: var(--medium-gray);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--light-purple);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    border-radius: var(--border-radius-sm);
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-left-color: var(--success);
+    color: #2E7D32;
+}
+
+.alert-danger {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-left-color: var(--danger);
+    color: #C62828;
+}
+
+.alert-warning {
+    background-color: rgba(255, 152, 0, 0.1);
+    border-left-color: var(--warning);
+    color: #EF6C00;
+}
+
+.alert-info {
+    background-color: rgba(33, 150, 243, 0.1);
+    border-left-color: var(--info);
+    color: #1565C0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-icon {
+        font-size: 6rem;
+    }
+    
+    .auth-card {
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+    
+    .payment-container, .success-container {
+        padding: 1.5rem;
+    }
+    
+    .bike-detail-icon {
+        font-size: 4rem;
+    }
+    
+    .stat-card {
+        text-align: center;
+        flex-direction: column;
+    }
+    
+    .reservation-card .row {
+        text-align: center;
+    }
+    
+    .reservation-card .col-md-2,
+    .reservation-card .col-md-6 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.fw-medium {
+    font-weight: 500 !important;
+}
+
+.border-radius {
+    border-radius: var(--border-radius) !important;
+}
+
+.border-radius-sm {
+    border-radius: var(--border-radius-sm) !important;
+}

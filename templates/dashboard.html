@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - BikeRent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-tachometer-alt text-primary me-2"></i>
+            Meu Dashboard
+        </h2>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-primary">
+                <i class="fas fa-bicycle"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ reservations|length }}</h3>
+                <p>Reservas Totais</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ reservations.values()|selectattr('status', 'equalto', 'paid')|list|length }}</h3>
+                <p>Reservas Ativas</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-info">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ reservations.values()|selectattr('status', 'equalto', 'pending_payment')|list|length }}</h3>
+                <p>Pendentes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reservations -->
+<div class="row">
+    <div class="col-12">
+        <div class="dashboard-section">
+            <h4 class="section-title">
+                <i class="fas fa-list-alt me-2"></i>Minhas Reservas
+            </h4>
+            
+            {% if reservations %}
+            <div class="reservations-list">
+                {% for reservation_id, reservation in reservations.items() %}
+                {% set bike = bikes[reservation.bike_id] %}
+                {% set plan = plans[reservation.plan] %}
+                
+                <div class="reservation-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <i class="fas fa-bicycle reservation-icon"></i>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 class="mb-1">{{ bike.model }}</h5>
+                            <p class="mb-1 text-muted">{{ plan.name }} - {{ plan.description }}</p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ reservation.created_at[:19].replace('T', ' ') }}
+                            </small>
+                        </div>
+                        
+                        <div class="col-md-2 text-center">
+                            <span class="badge reservation-status bg-{{ 'success' if reservation.status == 'paid' else 'warning' }}">
+                                {{ 'Pago' if reservation.status == 'paid' else 'Pendente' }}
+                            </span>
+                        </div>
+                        
+                        <div class="col-md-2 text-end">
+                            <div class="reservation-actions">
+                                {% if reservation.status == 'paid' %}
+                                <span class="text-success fw-bold">
+                                    R$ {{ "%.2f"|format(reservation.price) }}
+                                </span>
+                                {% else %}
+                                <a href="{{ url_for('payment', reservation_id=reservation.id) }}" 
+                                   class="btn btn-sm btn-primary">
+                                    <i class="fas fa-credit-card me-1"></i>Pagar
+                                </a>
+                                <a href="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}" 
+                                   class="btn btn-sm btn-outline-danger ms-1"
+                                   onclick="return confirm('Cancelar reserva?')">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state text-center py-5">
+                <i class="fas fa-bicycle empty-icon mb-3"></i>
+                <h5>Nenhuma reserva encontrada</h5>
+                <p class="text-muted mb-4">
+                    Você ainda não fez nenhuma reserva. Que tal explorar nossas bicicletas?
+                </p>
+                <a href="{{ url_for('map_view') }}" class="btn btn-primary">
+                    <i class="fas fa-map-marked-alt me-2"></i>Ver Bicicletas Disponíveis
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

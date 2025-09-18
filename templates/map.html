@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Mapa - BikeRent{% endblock %}
+
+{% block extra_head %}
+<style>
+#map { height: 500px; width: 100%; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-map-marked-alt text-primary me-2"></i>
+            Encontre sua bicicleta
+        </h2>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="filter-card">
+            <h5 class="mb-3">
+                <i class="fas fa-filter me-2"></i>Filtros
+            </h5>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <select class="form-select" id="typeFilter">
+                        <option value="">Todos os tipos</option>
+                        <option value="urbana">Urbana</option>
+                        <option value="mountain">Mountain</option>
+                        <option value="speed">Speed</option>
+                        <option value="eletrica">Elétrica</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="availabilityFilter">
+                        <option value="">Todas</option>
+                        <option value="true">Apenas disponíveis</option>
+                        <option value="false">Indisponíveis</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-search me-2"></i>Aplicar Filtros
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-secondary" onclick="clearFilters()">
+                        <i class="fas fa-times me-2"></i>Limpar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Bike List -->
+<div class="row" id="bikeList">
+    {% for bike_id, bike in bikes.items() %}
+    <div class="col-md-6 col-lg-4 mb-4 bike-card" 
+         data-type="{{ bike.type }}" 
+         data-available="{{ bike.available|lower }}">
+        <div class="card bike-item">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ bike.model }}</h5>
+                <span class="badge bg-{{ 'success' if bike.available else 'danger' }}">
+                    {{ 'Disponível' if bike.available else 'Em uso' }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="bike-info">
+                    <p class="mb-2">
+                        <i class="fas fa-bicycle me-2"></i>
+                        <strong>Tipo:</strong> {{ bike.type.title() }}
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-circle-notch me-2"></i>
+                        <strong>Aro:</strong> {{ bike.aro }}
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-battery-three-quarters me-2"></i>
+                        <strong>Bateria:</strong> {{ bike.battery }}%
+                    </p>
+                    
+                    <div class="d-grid">
+                        {% if bike.available %}
+                        <a href="{{ url_for('bike_details', bike_id=bike.id) }}" 
+                           class="btn btn-gradient">
+                            <i class="fas fa-eye me-2"></i>Ver Detalhes
+                        </a>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-lock me-2"></i>Indisponível
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let map;
+let markers = [];
+let bikes = {{ bikes | tojson }};
+
+// Initialize map
+function initMap() {
+    // São Paulo coordinates
+    map = L.map('map').setView([-23.550520, -46.633308], 15);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Add bike markers
+    addBikeMarkers(bikes);
+}
+
+function addBikeMarkers(bikeData) {
+    // Clear existing markers
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+    
+    Object.values(bikeData).forEach(bike => {
+        const icon = L.divIcon({
+            html: `<div class="bike-marker ${bike.available ? 'available' : 'unavailable'}">
+                     <i class="fas fa-bicycle"></i>
+                   </div>`,
+            className: 'custom-div-icon',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+        
+        const marker = L.marker([bike.lat, bike.lng], { icon: icon })
+            .bindPopup(`
+                <div class="popup-content">
+                    <h6>${bike.model}</h6>
+                    <p class="mb-1"><strong>Tipo:</strong> ${bike.type}</p>
+                    <p class="mb-1"><strong>Aro:</strong> ${bike.aro}</p>
+                    <p class="mb-2"><strong>Bateria:</strong> ${bike.battery}%</p>
+                    ${bike.available ? 
+                        `<a href="/bike/${bike.id}" class="btn btn-sm btn-primary">Ver Detalhes</a>` : 
+                        '<span class="text-muted">Indisponível</span>'
+                    }
+                </div>
+            `);
+        
+        marker.addTo(map);
+        markers.push(marker);
+    });
+}
+
+function applyFilters() {
+    const typeFilter = document.getElementById('typeFilter').value;
+    const availabilityFilter = document.getElementById('availabilityFilter').value;
+    
+    // Filter bikes
+    const filteredBikes = {};
+    Object.entries(bikes).forEach(([id, bike]) => {
+        let show = true;
+        
+        if (typeFilter && bike.type !== typeFilter) {
+            show = false;
+        }
+        
+        if (availabilityFilter && bike.available.toString() !== availabilityFilter) {
+            show = false;
+        }
+        
+        if (show) {
+            filteredBikes[id] = bike;
+        }
+    });
+    
+    // Update map markers
+    addBikeMarkers(filteredBikes);
+    
+    // Update bike cards
+    const bikeCards = document.querySelectorAll('.bike-card');
+    bikeCards.forEach(card => {
+        const bikeType = card.getAttribute('data-type');
+        const bikeAvailable = card.getAttribute('data-available');
+        let show = true;
+        
+        if (typeFilter && bikeType !== typeFilter) {
+            show = false;
+        }
+        
+        if (availabilityFilter && bikeAvailable !== availabilityFilter) {
+            show = false;
+        }
+        
+        card.style.display = show ? 'block' : 'none';
+    });
+}
+
+function clearFilters() {
+    document.getElementById('typeFilter').value = '';
+    document.getElementById('availabilityFilter').value = '';
+    
+    // Reset map
+    addBikeMarkers(bikes);
+    
+    // Show all bike cards
+    document.querySelectorAll('.bike-card').forEach(card => {
+        card.style.display = 'block';
+    });
+}
+
+// Initialize map when page loads
+document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %}

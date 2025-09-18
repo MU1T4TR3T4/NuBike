@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ bike.model }} - BikeRent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="bike-image-container">
+            <i class="fas fa-bicycle bike-detail-icon"></i>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="bike-details-info">
+            <h2 class="fw-bold mb-3">{{ bike.model }}</h2>
+            
+            <div class="bike-specs mb-4">
+                <div class="spec-item">
+                    <i class="fas fa-bicycle text-primary me-2"></i>
+                    <span class="fw-medium">Tipo:</span>
+                    <span class="badge bg-secondary ms-2">{{ bike.type.title() }}</span>
+                </div>
+                
+                <div class="spec-item">
+                    <i class="fas fa-circle-notch text-primary me-2"></i>
+                    <span class="fw-medium">Aro:</span>
+                    <span>{{ bike.aro }}</span>
+                </div>
+                
+                <div class="spec-item">
+                    <i class="fas fa-battery-three-quarters text-primary me-2"></i>
+                    <span class="fw-medium">Bateria:</span>
+                    <div class="progress ms-2" style="width: 100px;">
+                        <div class="progress-bar bg-success" style="width: {{ bike.battery }}%">
+                            {{ bike.battery }}%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                    <span class="fw-medium">Status:</span>
+                    <span class="badge bg-{{ 'success' if bike.available else 'danger' }} ms-2">
+                        {{ 'Disponível' if bike.available else 'Em uso' }}
+                    </span>
+                </div>
+            </div>
+            
+            {% if bike.available %}
+            <h4 class="mb-3">Escolha seu plano de aluguel</h4>
+            
+            <form method="POST" action="{{ url_for('reserve_bike', bike_id=bike.id) }}">
+                <div class="rental-plans">
+                    {% for plan_id, plan in plans.items() %}
+                    <div class="form-check plan-option">
+                        <input class="form-check-input" type="radio" name="plan" 
+                               id="plan_{{ plan_id }}" value="{{ plan_id }}" 
+                               {{ 'checked' if loop.first else '' }}>
+                        <label class="form-check-label plan-label" for="plan_{{ plan_id }}">
+                            <div class="plan-info">
+                                <h5 class="plan-name">{{ plan.name }}</h5>
+                                <p class="plan-description">{{ plan.description }}</p>
+                                <div class="plan-price">
+                                    <span class="price">R$ {{ "%.2f"|format(plan.price) }}</span>
+                                    <span class="unit">por {{ plan.unit }}</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-gradient btn-lg">
+                        <i class="fas fa-credit-card me-2"></i>Reservar e Pagar
+                    </button>
+                    <a href="{{ url_for('map_view') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Voltar ao Mapa
+                    </a>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Esta bicicleta está indisponível no momento.
+            </div>
+            <a href="{{ url_for('map_view') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2"></i>Voltar ao Mapa
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
