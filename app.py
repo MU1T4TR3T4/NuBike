@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
 """
 NuBike - Flask Bike Rental Application
-Academic project with Nubank-inspired design
+
+Sistema completo de aluguel de bicicletas com:
+- Autenticação segura de usuários
+- Mapa interativo com localização das bikes
+- Sistema de reservas e pagamentos (Stripe)
+- Geração de QR codes para desbloqueio
+- Dashboard com histórico de aluguéis
+
+Design inspirado no Nubank - Projeto Acadêmico
+Autor: [Seu Nome]
+Data: 2025
 """
+
+# =============================================================================
+# IMPORTS E CONFIGURAÇÕES
+# =============================================================================
 import os
 import json
 import uuid
@@ -14,67 +28,96 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 import stripe
 
+# =============================================================================
+# CONFIGURAÇÃO DA APLICAÇÃO FLASK
+# =============================================================================
 app = Flask(__name__)
+
+# Configuração de segurança - chave secreta para sessões
 app.secret_key = os.environ.get('SESSION_SECRET', 'dev-secret-key-change-in-production')
 
-# Stripe configuration
+# =============================================================================
+# CONFIGURAÇÃO DO STRIPE (PAGAMENTOS)
+# =============================================================================
 STRIPE_KEY = os.environ.get('STRIPE_SECRET_KEY')
 if STRIPE_KEY:
     stripe.api_key = STRIPE_KEY
+    print("✅ Stripe configurado com sucesso")
 else:
-    print("WARNING: STRIPE_SECRET_KEY not set. Payment functionality will be disabled.")
+    print("⚠️  WARNING: STRIPE_SECRET_KEY not set. Payment functionality will be disabled.")
 
+# Domínio da aplicação (para URLs do Stripe) 
+# Em produção, será detectado automaticamente via request.host_url
 YOUR_DOMAIN = os.environ.get('REPLIT_DEV_DOMAIN') or 'localhost:5000'
 
-# Mock data storage (in production, use a database)
-users = {}
-bikes = {
-    '1': {
-        'id': '1',
-        'model': 'Urban Pro',
-        'type': 'urbana',
-        'aro': '26',
-        'lat': -23.550520,
-        'lng': -46.633308,
-        'available': True,
-        'battery': 85,
-        'image': 'bike1.jpg'
-    },
-    '2': {
-        'id': '2',
-        'model': 'Mountain Explorer',
-        'type': 'mountain',
-        'aro': '29',
-        'lat': -23.551520,
-        'lng': -46.634308,
-        'available': True,
-        'battery': 92,
-        'image': 'bike2.jpg'
-    },
-    '3': {
-        'id': '3',
-        'model': 'Speed Lightning',
-        'type': 'speed',
-        'aro': '28',
-        'lat': -23.552520,
-        'lng': -46.635308,
-        'available': False,
-        'battery': 45,
-        'image': 'bike3.jpg'
-    },
-    '4': {
-        'id': '4',
-        'model': 'Electric City',
-        'type': 'eletrica',
-        'aro': '26',
-        'lat': -23.553520,
-        'lng': -46.636308,
-        'available': True,
-        'battery': 100,
-        'image': 'bike4.jpg'
-    }
-}
+# =============================================================================
+# ARMAZENAMENTO DE DADOS (MOCK)
+# Em produção, substitua por um banco de dados (PostgreSQL, MySQL, etc.)
+# =============================================================================
 
+# Dicionário para armazenar usuários registrados
+# Estrutura: {email: {id, name, email, password_hash, phone}}
+users = {}
+
+# =============================================================================
+# CARREGAMENTO DE DADOS DAS BICICLETAS
+# =============================================================================
+
+def load_bikes_data():
+    """
+    Carrega dados das bicicletas do arquivo JSON
+    Em caso de erro, usa dados fallback para desenvolvimento
+    """
+    try:
+        with open('data/bicicletas.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            bikes = {}
+            for bike in data['bicicletas']:
+                bikes[str(bike['id'])] = {
+                    'id': str(bike['id']),
+                    'model': bike['model'],
+                    'type': bike['type'].lower(),
+                    'aro': '26',  # Padrão se não especificado
+                    'lat': bike['location']['lat'],
+                    'lng': bike['location']['lng'],
+                    'available': bike['available'],
+                    'battery': bike['battery'],
+                    'image': bike.get('image', 'bike-default.jpg')
+                }
+            print(f"✅ Carregados {len(bikes)} bicicletas do arquivo JSON")
+            return bikes
+    except Exception as e:
+        print(f"⚠️ Erro ao carregar bicicletas do JSON: {e}")
+        print("📁 Usando dados fallback para desenvolvimento...")
+        return {
+            '1': {
+                'id': '1',
+                'model': 'Urban Pro',
+                'type': 'urbana',
+                'aro': '26',
+                'lat': -23.550520,
+                'lng': -46.633308,
+                'available': True,
+                'battery': 85,
+                'image': 'bike1.jpg'
+            },
+            '2': {
+                'id': '2',
+                'model': 'Mountain Explorer',
+                'type': 'mountain',
+                'aro': '29',
+                'lat': -23.551520,
+                'lng': -46.634308,
+                'available': True,
+                'battery': 92,
+                'image': 'bike2.jpg'
+            }
+        }
+
+# Carrega dados das bicicletas na inicialização
+bikes = load_bikes_data()
+
+# Planos de aluguel disponíveis com preços e descrições
 rental_plans = {
     'hourly': {
         'name': 'Por Hora',
@@ -96,25 +139,40 @@ rental_plans = {
     }
 }
 
+# Dicionário para armazenar reservas ativas
+# Estrutura: {reservation_id: {user_id, bike_id, plan, created_at, ...}}
 reservations = {}
+
+# =============================================================================
+# ROTAS PRINCIPAIS - PÁGINAS WEB
+# =============================================================================
 
 @app.route('/')
 def index():
-    """Home page"""
+    """
+    Página inicial do NuBike
+    - Se usuário logado: redireciona para mapa
+    - Se não logado: mostra landing page
+    """
     if 'user_id' in session:
         return redirect(url_for('map_view'))
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """User registration"""
+    """
+    Registro de novos usuários
+    - GET: Exibe formulário de cadastro
+    - POST: Processa dados e cria conta
+    - Validações: campos obrigatórios, senha mínima, email único
+    """
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '').strip()
         phone = request.form.get('phone', '').strip()
         
-        # Validation
+        # Validação dos dados do formulário
         if not all([name, email, password, phone]):
             flash('Todos os campos são obrigatórios!', 'error')
             return render_template('register.html')
@@ -127,12 +185,13 @@ def register():
             flash('Email já cadastrado!', 'error')
             return render_template('register.html')
         
+        # Cria novo usuário com hash da senha para segurança
         user_id = str(uuid.uuid4())
         users[email] = {
             'id': user_id,
             'name': name,
             'email': email,
-            'password': generate_password_hash(password),
+            'password': generate_password_hash(password),  # Hash seguro da senha
             'phone': phone
         }
         
@@ -286,8 +345,8 @@ def create_checkout_session():
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=f'https://{YOUR_DOMAIN}/success/{reservation_id}',
-            cancel_url=f'https://{YOUR_DOMAIN}/payment/{reservation_id}',
+            success_url=f'{request.host_url}success/{reservation_id}',
+            cancel_url=f'{request.host_url}payment/{reservation_id}',
             metadata={
                 'reservation_id': str(reservation_id)
             }

@@ -133,6 +133,12 @@ http://localhost:5000
 - `SESSION_SECRET`: Chave secreta para Flask sessions (obrigatória)
 - `STRIPE_SECRET_KEY`: Chave da API do Stripe (opcional para desenvolvimento)
 
+**Exemplo de configuração no Render:**
+```bash
+SESSION_SECRET=sua-chave-secreta-super-segura-aqui-min-32-chars
+STRIPE_SECRET_KEY=sk_test_sua_chave_stripe_aqui  # Opcional
+```
+
 ## 📊 Dados de Demonstração
 
 O sistema utiliza dados mockados armazenados em `/data/bicicletas.json` para demonstração, incluindo:
