@@ -1,0 +1,69 @@
+Quero que você crie um aplicativo web completo em Flask (Python) com frontend em HTML, CSS e JavaScript.  
+O aplicativo é para **aluguel de bicicletas**, baseado nos seguintes requisitos e melhorias discutidos:
+
+===============================
+REQUISITOS PRINCIPAIS
+===============================
+1. Cadastro de conta (nome, e-mail, senha, telefone).
+2. Login com e-mail e senha.
+3. Visualizar mapa interativo mostrando bicicletas em tempo real.
+4. Filtros no mapa (tipo de bicicleta, disponibilidade, área de cobertura).
+5. Detalhes de cada bicicleta (modelo, aro, fotos).
+6. Reserva de bicicleta.
+7. Escolha do plano de aluguel (por tempo ou distância) com descrição e valores (km/hora).
+8. Pagamento seguro (cartão de crédito, débito, Pix).
+9. Liberação via QR Code para destravar a bicicleta.
+
+===============================
+FUNCIONALIDADES EXTRAS (SUGERIDAS)
+===============================
+1. Recuperação de senha via e-mail ou SMS.
+2. Avaliação da bicicleta (nota/comentário após uso).
+3. Histórico de aluguéis (rotas, valores, datas).
+4. Locais favoritos (pontos de retirada/devolução frequentes).
+5. Notificações push (fim do tempo, promoções, bikes próximas).
+6. Carteira digital (créditos pré-pagos).
+7. Integração com Google Pay e Apple Pay.
+8. Rastreamento de rota em tempo real (tempo, distância, calorias).
+9. Suporte em tempo real (chat ou botão de emergência).
+
+===============================
+REQUISITOS NÃO FUNCIONAIS
+===============================
+1. Segurança no pagamento (criptografia e boas práticas).
+2. Interface responsiva (funcionar bem em celular e computador).
+3. Design inspirado no Nubank (tons roxo escuro, lilás, branco).
+4. Organização modular do código (Flask no backend, templates HTML no frontend).
+5. Estrutura de pastas limpa:
+   - /app.py (backend Flask)
+   - /templates (HTML)
+   - /static/css (CSS)
+   - /static/js (JavaScript)
+   - /static/img (imagens)
+
+===============================
+ESTILO VISUAL (inspirado no Nubank)
+===============================
+- Paleta: roxo escuro (#820AD1), lilás (#BA68C8), branco (#FFFFFF), cinza claro para fundos secundários.
+- Fontes modernas e arredondadas (ex: Poppins, Montserrat ou similar).
+- Botões arredondados, estilo clean e minimalista.
+- Navbar fixa com logo fictício do app.
+- Cards para exibir as bicicletas e planos de aluguel.
+- Layout responsivo, mobile-first.
+
+===============================
+O QUE GERAR
+===============================
+1. Estrutura Flask básica (rotas para cadastro, login, mapa, reserva, pagamento, histórico).
+2. Templates HTML estilizados no padrão Nubank (home, login, cadastro, mapa, reserva, pagamento, histórico).
+3. CSS no estilo Nubank (roxo predominante, minimalista, responsivo).
+4. JavaScript simples para interatividade (filtros no mapa, alertas, carregamento dinâmico).
+5. Exemplo de mock de dados (ex: algumas bicicletas já cadastradas com localização fake).
+6. Simulação do QR Code (não precisa destravar nada de verdade, apenas gerar imagem de QR code fake).
+
+===============================
+OBJETIVO
+===============================
+Quero um MVP funcional para apresentar como projeto acadêmico.  
+O foco é: **ter as telas prontas, navegação funcionando, mapa simulado e design bonito inspirado no Nubank.**  
+O backend pode ter apenas simulação (não precisa de banco real para agora), mas deve estar estruturado para facilitar expansão futura.
