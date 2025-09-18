@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BikeRent - Flask Bike Rental Application
+NuBike - Flask Bike Rental Application
 Academic project with Nubank-inspired design
 """
 import os

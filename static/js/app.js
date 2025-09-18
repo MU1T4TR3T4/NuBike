@@ -1,4 +1,4 @@
-// BikeRent JavaScript Application
+// NuBike JavaScript Application
 
 // Global variables
 let currentUser = null;
@@ -245,7 +245,7 @@ function clearFieldError(input) {
 // Local storage utilities for user preferences
 function saveUserPreference(key, value) {
     try {
-        localStorage.setItem(`bikerent_${key}`, JSON.stringify(value));
+        localStorage.setItem(`nubike_${key}`, JSON.stringify(value));
     } catch (e) {
         console.warn('Could not save user preference:', e);
     }
@@ -253,7 +253,7 @@ function saveUserPreference(key, value) {
 
 function getUserPreference(key, defaultValue = null) {
     try {
-        const item = localStorage.getItem(`bikerent_${key}`);
+        const item = localStorage.getItem(`nubike_${key}`);
         return item ? JSON.parse(item) : defaultValue;
     } catch (e) {
         console.warn('Could not get user preference:', e);
@@ -284,7 +284,7 @@ function animateOut(element, callback) {
 }
 
 // Export functions for global use
-window.BikeRent = {
+window.NuBike = {
     showNotification,
     confirmAction,
     formatCurrency,

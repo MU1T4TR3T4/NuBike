@@ -1,8 +1,8 @@
-# BikeRent - Flask Bike Rental Application
+# NuBike - Flask Bike Rental Application
 
 ## Overview
 
-BikeRent is a comprehensive web application for bicycle rentals, built with Flask (Python) and featuring a modern, Nubank-inspired design. The application allows users to register, find available bikes on an interactive map, make reservations, process payments, and unlock bikes using QR codes. It provides a complete bike-sharing solution with real-time bike tracking, multiple rental plans, and secure payment processing.
+NuBike is a comprehensive web application for bicycle rentals, built with Flask (Python) and featuring a modern, Nubank-inspired design. The application allows users to register, find available bikes on an interactive map, make reservations, process payments, and unlock bikes using QR codes. It provides a complete bike-sharing solution with real-time bike tracking, multiple rental plans, and secure payment processing.
 
 ## User Preferences
 
