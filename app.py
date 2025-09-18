@@ -11,13 +11,19 @@ import io
 import base64
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 import stripe
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SESSION_SECRET', 'dev-secret-key-change-in-production')
 
 # Stripe configuration
-stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_KEY = os.environ.get('STRIPE_SECRET_KEY')
+if STRIPE_KEY:
+    stripe.api_key = STRIPE_KEY
+else:
+    print("WARNING: STRIPE_SECRET_KEY not set. Payment functionality will be disabled.")
+
 YOUR_DOMAIN = os.environ.get('REPLIT_DEV_DOMAIN') or 'localhost:5000'
 
 # Mock data storage (in production, use a database)
@@ -103,10 +109,19 @@ def index():
 def register():
     """User registration"""
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        phone = request.form.get('phone')
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '').strip()
+        phone = request.form.get('phone', '').strip()
+        
+        # Validation
+        if not all([name, email, password, phone]):
+            flash('Todos os campos são obrigatórios!', 'error')
+            return render_template('register.html')
+        
+        if len(password) < 6:
+            flash('A senha deve ter pelo menos 6 caracteres!', 'error')
+            return render_template('register.html')
         
         if email in users:
             flash('Email já cadastrado!', 'error')
@@ -117,7 +132,7 @@ def register():
             'id': user_id,
             'name': name,
             'email': email,
-            'password': password,  # In production, hash this!
+            'password': generate_password_hash(password),
             'phone': phone
         }
         
@@ -130,11 +145,15 @@ def register():
 def login():
     """User login"""
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '').strip()
+        
+        if not email or not password:
+            flash('Email e senha são obrigatórios!', 'error')
+            return render_template('login.html')
         
         user = users.get(email)
-        if user and user['password'] == password:
+        if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['user_name'] = user['name']
             flash('Login realizado com sucesso!', 'success')
@@ -243,6 +262,10 @@ def payment(reservation_id):
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     """Create Stripe checkout session"""
+    if not STRIPE_KEY:
+        flash('Pagamento temporariamente indisponível. Entre em contato com o suporte.', 'error')
+        return redirect(url_for('dashboard'))
+    
     reservation_id = request.form.get('reservation_id')
     reservation = reservations.get(reservation_id)
     
