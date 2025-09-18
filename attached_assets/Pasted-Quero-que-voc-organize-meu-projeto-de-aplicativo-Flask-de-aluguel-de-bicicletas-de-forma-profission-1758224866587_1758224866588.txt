@@ -1,0 +1,74 @@
+Quero que você organize meu projeto de aplicativo Flask de aluguel de bicicletas de forma profissional, para que ele possa ser publicado no GitHub e depois no Render.  
+O app deve incluir **todas as funcionalidades já discutidas** (cadastro, login, mapa interativo, filtros, detalhes da bicicleta, reserva, planos, pagamento seguro, QR code, histórico, notificações, avaliação, carteira digital etc.) e estar estruturado corretamente.  
+
+===============================
+ESTRUTURA DO PROJETO
+===============================
+O projeto deve seguir a seguinte estrutura de pastas:
+
+/meu_app/
+  ├── app.py                  # arquivo principal do Flask
+  ├── requirements.txt        # todos os pacotes necessários (flask, flask-session, stripe, pillow, qrcode, requests, gunicorn, etc.)
+  ├── Procfile                # (opcional para Render) com comando: web: gunicorn app:app
+  ├── README.md               # breve descrição do projeto
+  ├── /templates/             # arquivos HTML
+  │     ├── base.html         # template base com navbar, rodapé, cores estilo Nubank
+  │     ├── login.html
+  │     ├── cadastro.html
+  │     ├── mapa.html
+  │     ├── reserva.html
+  │     ├── pagamento.html
+  │     ├── historico.html
+  ├── /static/
+        ├── /css/             # arquivos CSS
+        │     └── style.css   # cores roxo escuro/lilás/branco, botões arredondados, estilo Nubank
+        ├── /js/              # arquivos JS
+        │     └── main.js     # scripts para filtros, QR code simulado, interatividade
+        ├── /img/             # imagens e fotos de bicicletas
+  ├── /data/
+        └── bicicletas.json   # mock de dados das bicicletas (localização, tipo, fotos, plano, preço)
+
+===============================
+BACKEND
+===============================
+- Rotas Flask: /login, /cadastro, /mapa, /reserva, /pagamento, /historico
+- CRUD simulado com arquivos JSON (para mock de dados)
+- Pagamento simulado com Stripe sandbox
+- QR Code gerado com biblioteca qrcode
+- Estrutura modular para facilitar futuras expansões
+- Comentários explicativos em cada rota
+
+===============================
+FRONTEND
+===============================
+- HTML/CSS responsivo, inspirado no Nubank (roxo escuro, lilás, branco)
+- Navbar fixa, cards para bicicletas, botões arredondados
+- JS para filtros no mapa, simulação de QR code, interações simples
+- Templates Jinja2 para renderizar dados do Flask
+
+===============================
+REQUIREMENTS
+===============================
+- Flask
+- Flask-Session
+- Stripe
+- Pillow
+- qrcode
+- requests
+- gunicorn
+
+===============================
+OBJETIVO
+===============================
+Gerar **um projeto completo, limpo e organizado**, pronto para:  
+1. Subir no **GitHub** (com todas as pastas, arquivos, templates e static organizados)  
+2. Subir no **Render** usando Python + Flask com `gunicorn`  
+3. Manter todas as funcionalidades discutidas previamente  
+
+===============================
+OBSERVAÇÕES
+===============================
+- Cada arquivo HTML deve herdar do `base.html`  
+- O CSS deve usar cores predominantes: roxo escuro (#820AD1), lilás (#BA68C8), branco (#FFFFFF), cinza claro para fundos secundários  
+- Incluir README.md com instruções de como rodar localmente e deploy no Render
+- Adicione comentários explicativos no código para cada funcionalidade
